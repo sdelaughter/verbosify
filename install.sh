@@ -12,5 +12,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir -p $HOME/bin
 
 #Copy files into place
-cp -av "$DIR/run_backup.py" "$HOME/bin/"
-cp -av "$DIR/backup_command" "$HOME/bin/"
+cp -av "$DIR/verbosify" "$HOME/bin/"
