@@ -6,7 +6,7 @@ University of Massachusetts at Amherst
 Runs a bash script and sends notifications about the result
 Ideal for rsync backups or other scheduled tasks whose output would otherwise be unknown
 
-Configure via settings.json, which should be in the same directory as this file
+Configure via settings.json, which should be in the same directory as this file (unless an alternate settings file is specified via the -s argument)
 
 Accepts an optional '-c' or '--command' argument followed by the path of a command file to run
 	If left out, it will use the value in settings.json'
