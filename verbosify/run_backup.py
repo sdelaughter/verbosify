@@ -8,10 +8,23 @@ Ideal for rsync backups or other scheduled tasks whose output would otherwise be
 
 Configure via settings.json, which should be in the same directory as this file
 
-Accepts an optional '-V' or '--version' flag to print the version number and exit
-Accepts an optional '-f' or '--file' argument followed by the path of a command file to run
-	If left out, it will use the value in settings.json
+Accepts an optional '-c' or '--command' argument followed by the path of a command file to run
+	If left out, it will use the value in settings.json'
+	If the value in settings.json is an empty string, it will look for a command.sh file in the directory of this script
+Accepts an optional '-l' or '--log' argument followed by the path of a log directory to use
+	If left out, it will use the value in settings.json'
+	If the value in settings.json is an empty string, it will look for a logs subdirectory in the directory of this script
+	If that directory does not exist, it will be created
+	Note that log file names are generated at runtime based on the starting timestamp
+Accepts an optional '-L' or '--log_level' argument followed by the logging level to use
+	If left out, it will use the value in settings.json'
+	If the value in settings.json is an empty string, it will default to the INFO level
+	If an invalid level is supplied by any means, it will default to the DEBUG level
+	Lowercase or mixed-case arguments will be recognized and converted to the proper uppercase format
 Accepts an optional '-q' or '--quiet' flag to only notify about failures, not successes
+Accepts an optional '-s' or '--settings' argument followed by the path of a settings file to read
+	If left out, it will look for a settings.json file in the directory of this script
+Accepts an optional '-V' or '--version' flag to print the version number and exit
 
 """
 
@@ -31,35 +44,62 @@ import time
 
 #Parse arguments
 parser = argparse.ArgumentParser(description = 'Roster Import Script')
-parser.add_argument('-V', '--version', action='version', version=__version__)
+parser.add_argument('-c', '--command', action='store', nargs='?', default=False, dest='command', type=argparse.FileType('r'), help='command file')
+parser.add_argument('-l', '--log', action='store', nargs='?', default=False, dest='log', type=argparse.FileType('r'), help='log directory')
+parser.add_argument('-L', '--log_level', action='store', nargs='?', default=False, dest='log_level', type=argparse.FileType('r'), help='specify logging level')
 parser.add_argument('-q', '--quiet', action='store_true', default=False, dest='quiet', help='Only email for successes, not failures')
-parser.add_argument('-f', '--file', action='store', nargs='?', default=False, dest='file', type=argparse.FileType('r'), help='file name')
+parser.add_argument('-s', '--settings', action='store', nargs='?', default=False, dest='settings', type=argparse.FileType('r'), help='settings file')
+parser.add_argument('-V', '--version', action='version', version=__version__)
+
 global args
 args = parser.parse_args()
 
-SETTINGS_FILE = str(os.path.dirname(os.path.realpath(__file__))) + '/settings.json'
+#Load settings
+if args.settings:
+	SETTINGS_FILE = args.settings
+else:
+	SETTINGS_FILE = str(os.path.dirname(os.path.realpath(__file__))) + '/settings.json'
 global SETTINGS	
 SETTINGS = json.load(open(SETTINGS_FILE))
 
 
-def get_log_path(timestamp):
-	if SETTINGS['log_directory'] == '':
-		log_directory = str(os.path.dirname(os.path.realpath(__file__))) + '/logs/'
+def get_log_level():
+	if args.log_level:
+		log_level = args.log_level
 	else:
-		log_directory = SETTINGS['log_directory']
+		if SETTINGS['log_level'] == '':
+			log_level = 'INFO'
+		else:
+			log_level = SETTINGS['log_level']
+	log_level = log_level.upper()
+	if log_level not in ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSET']:
+		log_level = 'DEBUG'
+	return log_level
+
+
+def get_log_path(timestamp):
+	if args.log:
+		log_directory = args.log
+	else:
+		if SETTINGS['log_directory'] == '':
+			log_directory = str(os.path.dirname(os.path.realpath(__file__))) + '/logs/'
+		else:
+			log_directory = SETTINGS['log_directory']
+			
 	if log_directory.startswith('~'):
 		prefix = os.path.expanduser('~')
 		log_directory = str(prefix) + log_directory.split('~')[1]
+		
 	if not os.path.exists(log_directory):
 		os.makedirs(log_directory)
+		
 	log_filename = str(timestamp['filename']) + '.log'
 	log_path = str(log_directory) + str(log_filename)
 	return log_path
 	
-	
 def get_command_path():
-	if args.file:
-		command_path = args.file
+	if args.command:
+		command_path = args.command
 	else:
 		if SETTINGS['command_path'] == '':
 			command_path = str(os.path.dirname(os.path.realpath(__file__))) + '/command.sh'
@@ -247,9 +287,8 @@ def main():
 	
 	#Set up logging
 	print('Setting up log file')
-	logging.debug('Setting up log file')
 	log_path = get_log_path(timestamp)
-	logging.basicConfig(filename=log_path,level=logging.DEBUG,format='%(levelname)s: %(message)s')
+	logging.basicConfig(filename=log_path,level=logging.getLevelName(get_log_level()),format='%(levelname)s: %(message)s')
 	
 	#Run the scheduled task and obtain both the standard output and error output
 	print('Running the backup command...')
@@ -275,7 +314,8 @@ def main():
 		pass
 	else:
 		send_email(status, stdout_value, stderr_value, timestamp)
-		generate_notification(status)
+		if SETTINGS['osx_notification']:
+			generate_notification(status)
 		
 		
 if __name__ == "__main__":
