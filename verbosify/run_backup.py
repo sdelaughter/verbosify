@@ -1,6 +1,6 @@
 """Last Updated 2/25/16
 Written by Samuel DeLaughter
-Chemistry and BMB departments
+Departments of Chemistry and BMB
 University of Massachusetts at Amherst
 
 Runs a bash script and sends notifications about the result
