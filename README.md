@@ -14,4 +14,8 @@ Run a bash script and send email and OS X notifications about its exit status
  - Make sure to keep to_addr as a list in both the success and failure email sections, even if it only contains one value.
  - The notification section allows you to customize the OS X system notifications.
    - The 'enable' value toggles system notifications (0 to disable, 1 to enable)
+     - Note that this should only be enabled on OS X with terminal-notifier installed, though it will fail gracefully otherwise
    - If the 'subtitle' value is left as an empty string, it will display the timestamp of when the command finished running
+   
+######3. Install terminal-notifier if you'd like to make use of OSX system notifications
+    sudo gem install terminal-notifier

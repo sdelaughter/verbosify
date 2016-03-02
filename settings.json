@@ -14,18 +14,18 @@
 		"starttls": 0,
 		"success":{
 			"to_addr": [
-				"jschmoe@chem.umass.edu"
+				"sdelaughter@chem.umass.edu"
 			],
 			"from_addr": "backup-task@chem.umass.edu",
 			"subject": "Backup Completed",
 			"message": "A scheduled backup task has succeeded"
 		},
 		"failure": {
-                        "to_addr": [
-                                "jschmoe@chem.umass.edu",
+			"to_addr": [
+                "sdelaughter@chem.umass.edu",
 				"ithelp@chem.umass.edu"
-                        ],
-                        "from_addr": "backup-task@chem.umass.edu",
+            ],
+            "from_addr": "backup-task@chem.umass.edu",
 			"subject": "BACKUP FAILED",
 			"message": "WARNING! A scheduled backup task has failed"
 		}
