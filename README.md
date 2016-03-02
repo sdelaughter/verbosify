@@ -1,9 +1,9 @@
 # verbosify
 Run a bash script and send email and OS X notifications about its exit status
 
-######1. Edit verbosify/command.sh so that it contains the actual bash command you want to run
+######1. Edit command.sh so that it contains the actual bash command(s) you want to run
 
-######2. Edit verbosify/settings.json
+######2. Edit settings.json
  - You should be able to configure all settings through this file, without having to modify the python script in any way.
  - Note that this must be a properly formatted JSON file, with no comments, no blank lines, etc. 
    - An overview of the JSON syntax can be found here: http://www.w3schools.com/json/json_syntax.asp
