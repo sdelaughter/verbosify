@@ -2,7 +2,6 @@
 	"command_path": "",
 	"log_directory": "",
 	"log_level": "",
-	"osx_notification": 1,
 	"comments": {
 		"user": "Joe Schmoe",
 		"location": "LGRT170"
@@ -32,12 +31,15 @@
 		}
 	},
 	"notification": {
+		"enable": 1,
 		"success":{
 			"title": "Backup Complete",
+			"subtitle": "",
 			"message": "A scheduled backup has completed"
 		},
 		"failure": {
 			"title": "Backup Failed!",
+			"subtitle": "",
 			"message": "Please contact ithelp@chem.umass.edu"
 		}
 	}

@@ -12,3 +12,6 @@ Run a bash script and send email and OS X notifications about its exit status
  - Make sure the smtp_server, smtp_port, username, and password values in the email section are all properly set -- otherwise it will not be able to send emails.  The default values for smtp_port, username, and password are all blank since many smtp servers do not require authentication.
  - starttls is a boolean value, either 0 to turn it off or 1 to turn it on
  - Make sure to keep to_addr as a list in both the success and failure email sections, even if it only contains one value.
+ - The notification section allows you to customize the OS X system notifications.
+   - The 'enable' value toggles system notifications (0 to disable, 1 to enable)
+   - If the 'subtitle' value is left as an empty string, it will display the timestamp of when the command finished running

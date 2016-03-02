@@ -53,7 +53,7 @@ def get_log_level():
 	log_level = log_level.upper()
 	if log_level not in ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSET']:
 		log_level = 'DEBUG'
-	print 'Log level set to: ' + str(log_level)
+	print('Log level set to: ' + str(log_level))
 	return log_level
 
 
@@ -75,11 +75,15 @@ def get_log_path(timestamp):
 		
 	log_filename = str(timestamp['filename']) + '.log'
 	log_path = str(log_directory) + str(log_filename)
+	print('Log path set to: ' + str(log_path))
 	return log_path
 	
 def get_command_path():
 	if args.command:
 		command_path = args.command.name
+		if '/' not in command_path:
+		#If calling a command file in the current working directory, make sure it is preceeded by './'
+			command_path = './' + str(command_path)
 	else:
 		if SETTINGS['command_path'] == '':
 			command_path = str(os.path.dirname(os.path.realpath(__file__))) + '/test.sh'
@@ -88,6 +92,7 @@ def get_command_path():
 	if command_path.startswith('~'):
 		prefix = os.path.expanduser('~')
 		command_path = str(prefix) + command_path.split('~')[1]
+	print('Command path set to: ' + str(command_path))
 	return command_path
 
 
@@ -197,7 +202,9 @@ def generate_notification(status, endTime):
 	print('Generating System Notification')
 	logging.debug('Generating System Notification')
 	title = SETTINGS['notification'][status]['title']
-	subtitle = 'at ' + str(endTime['display'])
+	subtitle = SETTINGS['notification'][status]['subtitle']
+	if subtitle == '':
+		subtitle = 'at ' + str(endTime['display'])
 	message = SETTINGS['notification'][status]['message']
 	try:
 		notify(title, subtitle, message)
@@ -253,9 +260,9 @@ def main():
 
 	#Parse arguments
 	parser = argparse.ArgumentParser(description = 'Roster Import Script')
-	parser.add_argument('-c', '--command', action='store', nargs='?', default=False, dest='command', type=argparse.FileType('r'), help='command file')
+	parser.add_argument('-c', '--command', action='store', nargs='?', default=False, dest='command', type=file, help='command file')
 	parser.add_argument('-l', '--log', action='store', nargs='?', default=False, dest='log', type=argparse.FileType('r'), help='log directory')
-	parser.add_argument('-L', '--log_level', action='store', nargs='?', default=False, dest='log_level', type=argparse.FileType('r'), help='specify logging level')
+	parser.add_argument('-L', '--log_level', action='store', nargs='?', default=False, dest='log_level', help='specify logging level')
 	parser.add_argument('-q', '--quiet', action='store_true', default=False, dest='quiet', help='Only email for successes, not failures')
 	parser.add_argument('-s', '--settings', action='store', nargs='?', default=False, dest='settings', type=argparse.FileType('r'), help='settings file')
 	parser.add_argument('-V', '--version', action='version', version=__version__)
@@ -278,7 +285,8 @@ def main():
 	#Set up logging
 	print('Setting up log file')
 	log_path = get_log_path(startTime)
-	logging.basicConfig(filename=log_path,level=logging.getLevelName(get_log_level()),format='%(levelname)s: %(message)s')
+	logging.basicConfig(filename=log_path,level=get_log_level(),format='%(levelname)s: %(message)s')
+	#print(logging.getLogger().getEffectiveLevel())
 	
 	#Run the scheduled task and obtain both the standard output and error output
 	print('Running the backup command...')
@@ -306,7 +314,7 @@ def main():
 		pass
 	else:
 		send_email(status, stdout_value, stderr_value, startTime, endTime)
-		if SETTINGS['osx_notification']:
+		if SETTINGS['notification']['enable']:
 			generate_notification(status, endTime)
 		
 		
