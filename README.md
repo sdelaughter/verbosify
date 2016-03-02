@@ -19,3 +19,30 @@ Run a bash script and send email and OS X notifications about its exit status
    
 ######3. Install terminal-notifier if you'd like to make use of OSX system notifications
     sudo gem install terminal-notifier
+
+######4. Configure run.sh
+  - Only necessary if you plan to run verbosify as a scheduled command (eg. with cron or launchd)
+  - The included run.sh file assumes that it's in the same directory as verbosify.py and runs it with python (with no arguments)
+  - Feel free to remove the directory detection if you'd prefere to specify an absolute path (if run.sh and verbosify.py are in different folders), and to add any command-line arguments you want.
+
+######5. Copy the entire verbosify directory to wherever you'd like
+  - I'd recommend ~/bin
+ 
+###Supported command-line arguments
+ - Accepts an optional '-c' or '--command' argument followed by the path of a command file to run
+	  - If left out, it will use the value in settings.json'
+	  - If the value in settings.json is an empty string, it will look for a command.sh file in the directory of this script
+ - Accepts an optional '-l' or '--log' argument followed by the path of a log directory to use
+   -	If left out, it will use the value in settings.json'
+   -	If the value in settings.json is an empty string, it will look for a logs subdirectory in the directory of this script
+	    - If that directory does not exist, it will be created
+	  - Note that log file names are generated at runtime based on the starting timestamp
+ - Accepts an optional '-L' or '--log_level' argument followed by the logging level to use
+	  - If left out, it will use the value in settings.json'
+	  - If the value in settings.json is an empty string, it will default to the INFO level
+	  - If an invalid level is supplied by any means, it will default to the DEBUG level
+	  - Lowercase or mixed-case arguments will be recognized and converted to the proper uppercase format
+ - Accepts an optional '-q' or '--quiet' flag to only notify about failures, not successes
+ - Accepts an optional '-s' or '--settings' argument followed by the path of a settings file to read
+	  - If left out, it will look for a settings.json file in the directory of this script
+ - Accepts an optional '-V' or '--version' flag to print the version number and exit
