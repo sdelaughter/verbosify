@@ -13,6 +13,7 @@
                 "password": "",
 		"starttls": 0,
 		"success":{
+			"enable": 1,
 			"to_addr": [
 				"sdelaughter@chem.umass.edu"
 			],
@@ -21,6 +22,7 @@
 			"message": "A scheduled backup task has succeeded"
 		},
 		"failure": {
+			"enable": 1,
 			"to_addr": [
                 "sdelaughter@chem.umass.edu",
 				"ithelp@chem.umass.edu"
@@ -31,13 +33,14 @@
 		}
 	},
 	"notification": {
-		"enable": 1,
 		"success":{
+			"enable": 1,
 			"title": "Backup Complete",
 			"subtitle": "",
 			"message": "A scheduled backup has completed"
 		},
 		"failure": {
+			"enable": 1,
 			"title": "Backup Failed!",
 			"subtitle": "",
 			"message": "Please contact ithelp@chem.umass.edu"

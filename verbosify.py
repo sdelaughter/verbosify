@@ -313,8 +313,9 @@ def main():
 	#If the task completed with no errors and the --quiet flag is set, skip notifications
 		pass
 	else:
-		send_email(status, stdout_value, stderr_value, startTime, endTime)
-		if SETTINGS['notification']['enable']:
+		if SETTINGS['mail'][status]['enable']:
+			send_email(status, stdout_value, stderr_value, startTime, endTime)
+		if SETTINGS['notification'][status]['enable']:
 			generate_notification(status, endTime)
 		
 		
