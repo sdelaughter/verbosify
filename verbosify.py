@@ -1,4 +1,4 @@
-"""Last Updated 2/25/16
+"""Last Updated 3/3/16
 Written by Samuel DeLaughter
 Departments of Chemistry and BMB
 University of Massachusetts at Amherst
@@ -28,7 +28,7 @@ Accepts an optional '-V' or '--version' flag to print the version number and exi
 
 """
 
-__version__ = "0.1"
+__version__ = "0.9"
 
 import argparse
 from email.mime.text import MIMEText
@@ -60,6 +60,9 @@ def get_log_level():
 def get_log_path(timestamp):
 	if args.log:
 		log_directory = args.log.name
+		if '/' not in log_directory:
+		#If using a log directory in the current working directory, make sure it is preceeded by './'
+			log_directory = './' + str(log_directory)
 	else:
 		if SETTINGS['log_directory'] == '':
 			log_directory = str(os.path.dirname(os.path.realpath(__file__))) + '/logs/'
