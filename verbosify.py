@@ -41,6 +41,7 @@ import subprocess
 import sys
 import time
 
+from pprint import pprint
 
 def get_log_level():
 	if args.log_level:
@@ -59,7 +60,7 @@ def get_log_level():
 
 def get_log_path(timestamp):
 	if args.log:
-		log_directory = args.log.name
+		log_directory = args.log
 		if '/' not in log_directory:
 		#If using a log directory in the current working directory, make sure it is preceeded by './'
 			log_directory = './' + str(log_directory)
@@ -72,6 +73,9 @@ def get_log_path(timestamp):
 	if log_directory.startswith('~'):
 		prefix = os.path.expanduser('~')
 		log_directory = str(prefix) + log_directory.split('~')[1]
+	
+	if not log_directory.endswith('/'):
+		log_directory += '/'
 		
 	if not os.path.exists(log_directory):
 		os.makedirs(log_directory)
@@ -98,6 +102,16 @@ def get_command_path():
 	print('Command path set to: ' + str(command_path))
 	return command_path
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 def notify(title, subtitle, message):
 	"""Send an OS X System Notification
@@ -179,7 +193,7 @@ def send_email(status, output, error, startTime, endTime):
 		logging.info('Sending Email')
 		s.sendmail(from_addr, to_addr, msg.as_string())
 		print('Sent Email to ' + str(to_addr))
-		loggin.info('Sent Email to ' + str(to_addr))
+		logging.info('Sent Email to ' + str(to_addr))
 	except:
 		logging.critical('FAILED TO SEND EMAIL TO: ' + str(to_addr))	
 	s.quit()
@@ -264,10 +278,10 @@ def main():
 	#Parse arguments
 	parser = argparse.ArgumentParser(description = 'Roster Import Script')
 	parser.add_argument('-c', '--command', action='store', nargs='?', default=False, dest='command', type=file, help='command file')
-	parser.add_argument('-l', '--log', action='store', nargs='?', default=False, dest='log', type=argparse.FileType('r'), help='log directory')
+	parser.add_argument('-l', '--log', action='store', nargs='?', default=False, dest='log', help='log directory')
 	parser.add_argument('-L', '--log_level', action='store', nargs='?', default=False, dest='log_level', help='specify logging level')
 	parser.add_argument('-q', '--quiet', action='store_true', default=False, dest='quiet', help='Only email for successes, not failures')
-	parser.add_argument('-s', '--settings', action='store', nargs='?', default=False, dest='settings', type=argparse.FileType('r'), help='settings file')
+	parser.add_argument('-s', '--settings', action='store', nargs='?', default=False, dest='settings', type=file, help='settings file')
 	parser.add_argument('-V', '--version', action='version', version=__version__)
 
 	global args
@@ -279,7 +293,7 @@ def main():
 	else:
 		SETTINGS_FILE = str(os.path.dirname(os.path.realpath(__file__))) + '/settings.json'
 	global SETTINGS	
-	SETTINGS = json.load(open(SETTINGS_FILE))
+	SETTINGS = byteify(json.load(open(SETTINGS_FILE)))
 
 	#Record and format a starting timestamp
 	t = time.localtime()
@@ -316,7 +330,7 @@ def main():
 	#If the task completed with no errors and the --quiet flag is set, skip notifications
 		pass
 	else:
-		if SETTINGS['mail'][status]['enable']:
+		if SETTINGS['email'][status]['enable']:
 			send_email(status, stdout_value, stderr_value, startTime, endTime)
 		if SETTINGS['notification'][status]['enable']:
 			generate_notification(status, endTime)

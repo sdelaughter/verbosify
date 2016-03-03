@@ -21,7 +21,7 @@ You should be able to configure all settings through this file, without having t
    - This section offers a place to add extra information to the body of the notification emails.
    - You may add any new key/value pairs you like to this section.  You should be able to add lists and dictionaries too, but they're unlikely to be displayed nicely.
    - You may also remove any default entries you don't need, and even remove the comments section altogether if you want to.  However, if you do leave the comments section in place you must also leave the 'success' and 'failure' dictionaries within it.
- - mail
+ - email
    - Make sure the smtp_server, smtp_port, username, and password values in the email section are all properly set -- otherwise it will not be able to send emails.
    - The default values for smtp_port, username, and password are all blank by default since many smtp servers do not require authentication.
    - starttls is a boolean value, either 0 to turn it off or 1 to turn it on
