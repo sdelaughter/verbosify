@@ -41,13 +41,14 @@ Run a bash script and send email and OS X notifications about its exit status
   - Only necessary if you plan to run verbosify as a scheduled command (eg. with cron or launchd)
   - The included run.sh file assumes that it's in the same directory as verbosify.py and runs it with python (with no arguments)
   - Feel free to remove the directory detection if you'd prefere to specify an absolute path (if run.sh and verbosify.py are in different folders), and to add any command-line arguments you want.
-
-######5. Copy the entire verbosify directory to wherever you'd like
-  - I'd recommend ~/bin
   
 ###Run
-    cd /path/to/verbosify/
-    python verbosify.py
+  - You may place the verbosify directory anywhere you'd like, and can rename it as well.
+  - To run the program a single time, simply cd into the directory and execute this command:
+
+        python verbosify.py
+
+  - If running it as a scheduled task, you should configure and use run.sh as above.
  
 ###Command-Line Arguments
  - Accepts an optional '-c' or '--command' argument followed by the path of a command file to run
