@@ -3,8 +3,14 @@
 	"log_directory": "",
 	"log_level": "",
 	"comments": {
-		"user": "Joe Schmoe",
-		"location": "LGRT170"
+		"success":{
+			"user": "Joe Schmoe",
+			"location": "LGRT170"
+		},
+		"failure":{
+			"user": "Joe Schmoe",
+			"location": "LGRT170"
+		}
 	},
 	"email": {
 		"smtp_server": "mailhub.oit.umass.edu",

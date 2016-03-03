@@ -148,8 +148,8 @@ def send_email(status, output, error, startTime, endTime):
 	body = SETTINGS['email'][status]['message']
 	if 'comments' in SETTINGS:
 		body += '\n'
-		for k in SETTINGS['comments']:
-			body += ('\n' + str(k) + ': ' + str(SETTINGS['comments'][k]))
+		for k in SETTINGS['comments'][status]:
+			body += ('\n' + str(k) + ': ' + str(SETTINGS['comments'][status][k]))
 	body += "\n\nStart Time: " + str(startTime['display'])
 	body += "\n  End Time: " + str(endTime)
 	body += "\n\nError Message:\n" + str(error)
