@@ -5,36 +5,37 @@
 	"comments": {
 		"success":{
 			"user": "Joe Schmoe",
-			"location": "LGRT170",
+			"location": "BLDG 123",
 			"program": "rsync backup"
 		},
 		"failure":{
 			"user": "Joe Schmoe",
-			"location": "LGRT170",
+			"location": "BLDG 123",
 			"program": "rsync backup"
 		}
 	},
 	"email": {
-		"smtp_server": "mailhub.oit.umass.edu",
+		"smtp_server": "mailhub.example.org",
                 "smtp_port": "",
                 "username": "",
                 "password": "",
 		"starttls": 0,
 		"success":{
-			"enable": 0,
+			"enable": 1,
 			"to_addr": [
-				""
+				"jschmoe@example.org"
 			],
-			"from_addr": "backup-task@chem.umass.edu",
+			"from_addr": "backup-task@example.org",
 			"subject": "Backup Completed",
 			"message": "A scheduled backup task has succeeded"
 		},
 		"failure": {
 			"enable": 1,
 			"to_addr": [
-                "ithelp@chem.umass.edu"
+                "ithelp@example.org",
+                "jschmoe@example.org"
             ],
-            "from_addr": "backup-task@chem.umass.edu",
+            "from_addr": "backup-task@example.org",
 			"subject": "BACKUP FAILED",
 			"message": "WARNING! A scheduled backup task has failed"
 		}
@@ -50,7 +51,7 @@
 			"enable": 1,
 			"title": "Backup Failed!",
 			"subtitle": "",
-			"message": "Please contact ithelp@chem.umass.edu"
+			"message": "Please contact ithelp@example.org"
 		}
 	}
 }
