@@ -308,21 +308,37 @@ def main():
 	#Run the scheduled task and obtain both the standard output and error output
 	print('Running the backup command...')
 	logging.info('Running the backup command...')
-	command_path = get_command_path()
-	proc = subprocess.Popen(command_path.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout_value, stderr_value = proc.communicate()
-	print 'Output:\n', stdout_value
-
-	if stderr_value == '':
-		print 'Command exited with no errors'
-		logging.info('Command exited with no errors')
-		status = 'success'
-	else:
-		print 'Command exited with error(s)'
-		logging.warning('Command exited with error(s)')
-		print 'Error:\n', stderr_value
-		logging.warning('Error: ' + str(stderr_value))
+	try:
+		command_path = get_command_path()
+	except:
+		logging.critical('Failed to locate the command file\n' + str(e.message) + '\n' + str(e.__doc__))
+		print('Failed to locate the command file\n' + str(e.message) + '\n' + str(e.__doc__))
+		stderr_value = ('Failed to locate the command file\n' + str(e.message) + '\n' + str(e.__doc__))
+		stdout_value = '[No output to display]'
 		status = 'failure'
+	else:
+		try:
+			proc = subprocess.Popen(command_path.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			stdout_value, stderr_value = proc.communicate()
+			print 'Output:\n', stdout_value
+		except Exception, e:
+			logging.critical('Failed to execute command\n' + str(e.message) + '\n' + str(e.__doc__))
+			print('Failed to execute command\n' + str(e.message) + '\n' + str(e.__doc__))
+			stderr_value = 'Failed to execute command\n' + str(e.message) + '\n' + str(e.__doc__)
+			stdout_value = '[No output to display]'
+			status = 'failure'
+		else:
+			if stderr_value == '':
+				print 'Command exited with no errors'
+				logging.info('Command exited with no errors')
+				status = 'success'
+				stderr_value = '[Command exited with no errors]'
+			else:
+				print 'Command exited with error(s)'
+				logging.warning('Command exited with error(s)')
+				print 'Error:\n', stderr_value
+				logging.warning('Error: ' + str(stderr_value))
+				status = 'failure'
 	
 	endTime = format_timestamp(time.localtime())
 	

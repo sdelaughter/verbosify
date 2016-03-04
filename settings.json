@@ -30,8 +30,7 @@
 		"failure": {
 			"enable": 1,
 			"to_addr": [
-                "sdelaughter@chem.umass.edu",
-				"ithelp@chem.umass.edu"
+                "sdelaughter@chem.umass.edu"
             ],
             "from_addr": "backup-task@chem.umass.edu",
 			"subject": "BACKUP FAILED",
