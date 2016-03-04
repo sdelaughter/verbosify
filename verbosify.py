@@ -1,4 +1,4 @@
-"""Last Updated 3/3/16
+"""Last Updated 3/4/16
 Written by Samuel DeLaughter
 Departments of Chemistry and BMB
 University of Massachusetts at Amherst
@@ -44,6 +44,22 @@ import time
 from pprint import pprint
 
 def get_log_level():
+	"""Establish which logging level should be used
+	Checks for a command line argument first
+	If none is found, checks the settings file
+	If that contains an empty string, defaults to INFO
+	Defaults to DEBUG if an invalid level is supplied by any means
+
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	log_level : string
+		The logging level that will be used
+	
+	"""
 	if args.log_level:
 		log_level = str(args.log_level)
 	else:
@@ -59,6 +75,24 @@ def get_log_level():
 
 
 def get_log_path(timestamp):
+	"""Establish the path of the log file
+	Checks for a command line argument for the directory first
+	If none is found, checks the settings file
+	If that contains an empty string, uses ./logs
+	The filename is then determined by the timestamp
+	
+	Parameters
+	----------
+	timestamp : dict
+		A timestamp dictionary created by format_timestamp()
+		Used to generate a unique filename
+
+	Returns
+	-------
+	log_path : string
+		The path to the log
+	
+	"""
 	if args.log:
 		log_directory = args.log
 		if '/' not in log_directory:
@@ -85,7 +119,23 @@ def get_log_path(timestamp):
 	print('Log path set to: ' + str(log_path))
 	return log_path
 	
+	
 def get_command_path():
+	"""Establish the path of the command file
+	Checks for a command line argument first
+	If none is found, checks the settings file
+	If that contains an empty string, uses ./command.sh
+	
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	command_path : string
+		The path to the command file
+	
+	"""
 	if args.command:
 		command_path = args.command.name
 		if '/' not in command_path:
@@ -103,6 +153,21 @@ def get_command_path():
 	return command_path
 
 def byteify(input):
+	"""Iterate through an object and convert any unicode strings to byte strings
+	Used to process settings.json
+	
+	Parameters
+	----------
+	input : object
+		Accepts any type of input to process
+
+	Returns
+	-------
+	command_path : string
+		The path to the command file
+	
+	"""
+	
     if isinstance(input, dict):
         return {byteify(key): byteify(value)
                 for key, value in input.iteritems()}
@@ -112,6 +177,7 @@ def byteify(input):
         return input.encode('utf-8')
     else:
         return input
+
 
 def notify(title, subtitle, message):
 	"""Send an OS X System Notification
