@@ -5,11 +5,13 @@
 	"comments": {
 		"success":{
 			"user": "Joe Schmoe",
-			"location": "LGRT170"
+			"location": "LGRT170",
+			"program": "rsync backup"
 		},
 		"failure":{
 			"user": "Joe Schmoe",
-			"location": "LGRT170"
+			"location": "LGRT170",
+			"program": "rsync backup"
 		}
 	},
 	"email": {
@@ -19,9 +21,9 @@
                 "password": "",
 		"starttls": 0,
 		"success":{
-			"enable": 1,
+			"enable": 0,
 			"to_addr": [
-				"sdelaughter@chem.umass.edu"
+				""
 			],
 			"from_addr": "backup-task@chem.umass.edu",
 			"subject": "Backup Completed",
@@ -30,7 +32,7 @@
 		"failure": {
 			"enable": 1,
 			"to_addr": [
-                "sdelaughter@chem.umass.edu"
+                "ithelp@chem.umass.edu"
             ],
             "from_addr": "backup-task@chem.umass.edu",
 			"subject": "BACKUP FAILED",
