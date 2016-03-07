@@ -142,8 +142,8 @@ def get_command_path():
 		#If calling a command file in the current working directory, make sure it is preceeded by './'
 			command_path = './' + str(command_path)
 	else:
-		if SETTINGS['command_path'] == '':
-			command_path = str(os.path.dirname(os.path.realpath(__file__))) + '/test.sh'
+		if SETTINGS['command_path'] == "":
+			command_path = str(os.path.dirname(os.path.realpath(__file__))) + '/command.sh'
 		else:
 			command_path = SETTINGS['command_path']
 	if command_path.startswith('~'):
