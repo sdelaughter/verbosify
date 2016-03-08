@@ -407,6 +407,8 @@ def main():
 				status = 'failure'
 	
 	endTime = format_timestamp(time.localtime())
+	logging.info('Errors:\n' + str(stderr_value))
+	logging.info('Output:\n' + str(stdout_value))
 	
 	if((status == 'success') and (args.quiet)):
 	#If the task completed with no errors and the --quiet flag is set, skip notifications
