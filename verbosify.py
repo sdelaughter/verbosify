@@ -28,7 +28,7 @@ Accepts an optional '-V' or '--version' flag to print the version number and exi
 
 """
 
-__version__ = "0.9"
+__version__ = "1.0"
 
 import argparse
 from email.mime.text import MIMEText
