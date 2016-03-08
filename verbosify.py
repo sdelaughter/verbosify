@@ -1,4 +1,4 @@
-"""Last Updated 3/4/16
+"""Last Updated 3/8/16
 Written by Samuel DeLaughter
 Departments of Chemistry and BMB
 University of Massachusetts at Amherst
