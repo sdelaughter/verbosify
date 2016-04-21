@@ -1,4 +1,4 @@
-"""Last Updated 3/8/16
+"""Last Updated 4/21/16
 Written by Samuel DeLaughter
 Departments of Chemistry and BMB
 University of Massachusetts at Amherst
@@ -28,7 +28,7 @@ Accepts an optional '-V' or '--version' flag to print the version number and exi
 
 """
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 import argparse
 from email.mime.text import MIMEText
