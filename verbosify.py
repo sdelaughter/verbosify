@@ -236,7 +236,8 @@ def send_email(status, output, error, startTime, endTime):
 	body += "\n\nStart Time: " + str(startTime['display'])
 	body += "\n  End Time: " + str(endTime)
 	body += "\n\nError Message:\n" + str(error)
-	body += "\n\nFull Output:\n" + str(output)
+	if SETTINGS['email'][status]['full_output']:
+		body += "\n\nFull Output:\n" + str(output)
 	
 	to_addr = SETTINGS['email'][status]['to_addr']
 	from_addr = SETTINGS['email'][status]['from_addr']
