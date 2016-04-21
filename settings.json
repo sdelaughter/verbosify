@@ -22,6 +22,7 @@
 		"starttls": 0,
 		"success":{
 			"enable": 1,
+			"full_output": 0,
 			"to_addr": [
 				"jschmoe@example.org"
 			],
@@ -31,11 +32,12 @@
 		},
 		"failure": {
 			"enable": 1,
+			"full_output": 0,
 			"to_addr": [
-                "ithelp@example.org",
-                "jschmoe@example.org"
-            ],
-            "from_addr": "backup-task@example.org",
+        			"ithelp@example.org",
+                		"jschmoe@example.org"
+        		 ],
+            		"from_addr": "backup-task@example.org",
 			"subject": "BACKUP FAILED",
 			"message": "WARNING! A scheduled backup task has failed"
 		}
