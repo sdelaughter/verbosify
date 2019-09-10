@@ -1,11 +1,11 @@
 # verbosify
 Run a bash script and send email and OS X notifications about its exit status
 
-###Install and Configure
+### Install and Configure
 
-######1. Edit command.sh so that it contains the actual bash command(s) you want to run
+###### 1. Edit command.sh so that it contains the actual bash command(s) you want to run
 
-######2. Edit settings.json
+###### 2. Edit settings.json
 You should be able to configure all settings through this file, without having to modify the python script in any way.  Note that this must be a properly formatted JSON file, with no comments, no blank lines, etc.  An overview of the JSON syntax can be found at http://www.w3schools.com/json/json_syntax.asp
  - command_path
    - This value is optional -- if left as a set of empty double quotes, it will default to a file named 'command.sh' in the same directory as the python script.
@@ -32,15 +32,15 @@ You should be able to configure all settings through this file, without having t
        - Note that this should only be enabled on OS X with terminal-notifier installed, though it will fail gracefully otherwise
      - If the 'subtitle' value is left as an empty string, it will display the timestamp of when the command finished running
    
-######3. Install terminal-notifier if you'd like to make use of OSX system notifications
+###### 3. Install terminal-notifier if you'd like to make use of OSX system notifications
     sudo gem install terminal-notifier
 
-######4. Configure run.sh
+###### 4. Configure run.sh
   - Only necessary if you plan to run verbosify as a scheduled command (eg. with cron or launchd)
   - The included run.sh file assumes that it's in the same directory as verbosify.py and runs it with python (with no arguments)
   - Feel free to remove the directory detection if you'd prefere to specify an absolute path (if run.sh and verbosify.py are in different folders), and to add any command-line arguments you want.
   
-###Run
+### Run
   - You may place the verbosify directory anywhere you'd like, and can rename it as well.
   - To run the program a single time, simply cd into the directory and execute this command:
 
@@ -48,7 +48,7 @@ You should be able to configure all settings through this file, without having t
 
   - If running it as a scheduled task, you should configure and use run.sh as above.
  
-###Command-Line Arguments
+### Command-Line Arguments
  - Accepts an optional '-c' or '--command' argument followed by the path of a command file to run
 	  - If left out, it will use the value in settings.json'
 	  - If the value in settings.json is an empty string, it will look for a command.sh file in the directory of this script
